@@ -21,17 +21,17 @@ const GameContainer = () => {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      switch (event.key) {
-        case 'ArrowUp':
+      switch (event.key.toLowerCase()) {
+        case 'w':
           setSnakeDirection('UP');
           break;
-        case 'ArrowDown':
+        case 's':
           setSnakeDirection('DOWN');
           break;
-        case 'ArrowLeft':
+        case 'a':
           setSnakeDirection('LEFT');
           break;
-        case 'ArrowRight':
+        case 'd':
           setSnakeDirection('RIGHT');
           break;
         default:
@@ -53,24 +53,28 @@ const GameContainer = () => {
 
       switch (snakeDirection) {
         case 'UP':
-          newHead.y -= 20;
+          newHead.y -= 5;
           break;
         case 'DOWN':
-          newHead.y += 20;
+          newHead.y += 5;
           break;
         case 'LEFT':
-          newHead.x -= 20;
+          newHead.x -= 5;
           break;
         case 'RIGHT':
-          newHead.x += 20;
+          newHead.x += 5;
           break;
         default:
           break;
       }
 
-      // Get the width and height of the game container
-      const containerWidth = 400; // Adjust this based on your container width
-      const containerHeight = 400; // Adjust this based on your container height
+      // Get the width and height of the game containers
+      const containerWidth = document.querySelector('.game-container')
+        .clientWidth;
+      const containerHeight = document.querySelector('.game-container')
+        .clientHeight;
+
+
 
       // Wrap around the screen if the snake crosses the boundary
       newHead.x = (newHead.x + containerWidth) % containerWidth;
@@ -78,11 +82,13 @@ const GameContainer = () => {
 
       newSegments.unshift(newHead);
 
-      if (newHead.x === applePosition.x && newHead.y === applePosition.y) {
+      if (
+        Math.abs(newHead.x - applePosition.x) < 25 &&
+        Math.abs(newHead.y - applePosition.y) < 25
+      ) {
         generateApplePosition();
         newSegments = [...newSegments, { x: -1, y: -1 }];
       }
-
       if (newSegments.length > snakeSegments.length) {
         newSegments.pop();
       }
@@ -90,7 +96,7 @@ const GameContainer = () => {
       setSnakeSegments(newSegments);
     };
 
-    const intervalId = setInterval(moveSnake, 200);
+    const intervalId = setInterval(moveSnake, 25);
 
     return () => {
       clearInterval(intervalId);
@@ -102,9 +108,8 @@ const GameContainer = () => {
       {snakeSegments.map((segment, index) => (
         <div
           key={index}
-          className={`snake-segment ${index === 0 ? 'head' : ''} ${
-            index > 0 ? 'tail' : ''
-          }`}
+          className={`snake-segment ${index === 0 ? 'head' : ''} ${index > 0 ? 'tail' : ''
+            }`}
           style={{
             left: `${segment.x < 0 ? segment.x + containerWidth : segment.x}px`,
             top: `${segment.y < 0 ? segment.y + containerHeight : segment.y}px`,
