@@ -6,6 +6,7 @@ import GameContainer from './components/GameContainer';
 function App() {
   return (
     <div className="App">
+      <h1>worm.</h1>
       <GameContainer />
     </div>
   );

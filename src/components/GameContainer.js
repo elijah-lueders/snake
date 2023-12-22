@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './GameContainer.css';
 
 const GameContainer = () => {
-  const [applePosition, setApplePosition] = useState({ x: 0, y: 0 });
-  const [snakeDirection, setSnakeDirection] = useState('RIGHT');
-  const [snakeSegments, setSnakeSegments] = useState([{ x: 0, y: 0 }]);
+  const [applePosition, setApplePosition] = useState({ x: 40, y: 40 });
+  const [snakeDirection, setSnakeDirection] = useState('');
+  const [snakeSegments, setSnakeSegments] = useState([{ x: 0 , y: 0 }]);
   const [gameLoop, setGameLoop] = useState(null);
 
   useEffect(() => {
@@ -23,16 +23,31 @@ const GameContainer = () => {
     const handleKeyPress = (event) => {
       switch (event.key.toLowerCase()) {
         case 'w':
-          setSnakeDirection('UP');
+          setSnakeDirection('N');
           break;
-        case 's':
-          setSnakeDirection('DOWN');
-          break;
-        case 'a':
-          setSnakeDirection('LEFT');
+        case 'e':
+          setSnakeDirection('NE');
           break;
         case 'd':
-          setSnakeDirection('RIGHT');
+          setSnakeDirection('E');
+          break;
+        case 'c':
+          setSnakeDirection('SE');
+          break;
+        case 'x':
+          setSnakeDirection('S');
+          break;
+        case 's':
+          setSnakeDirection('S');
+          break;
+        case 'z':
+          setSnakeDirection('SW');
+          break;
+        case 'a':
+          setSnakeDirection('W');
+          break;
+        case 'q':
+          setSnakeDirection('NW');
           break;
         default:
           break;
@@ -52,17 +67,33 @@ const GameContainer = () => {
       let newHead = { ...newSegments[0] };
 
       switch (snakeDirection) {
-        case 'UP':
+        case 'N':
           newHead.y -= 5;
           break;
-        case 'DOWN':
+        case 'NE':
+          newHead.x += 3;
+          newHead.y -= 3;
+          break;
+        case 'E':
+          newHead.x += 5;
+          break;
+        case 'SE':
+          newHead.x += 3;
+          newHead.y += 3;
+          break;
+        case 'S':
           newHead.y += 5;
           break;
-        case 'LEFT':
+        case 'SW':
+          newHead.x -= 3;
+          newHead.y += 3;
+          break;
+        case 'W':
           newHead.x -= 5;
           break;
-        case 'RIGHT':
-          newHead.x += 5;
+        case 'NW':
+          newHead.x -= 3;
+          newHead.y -= 3;
           break;
         default:
           break;
@@ -96,7 +127,7 @@ const GameContainer = () => {
       setSnakeSegments(newSegments);
     };
 
-    const intervalId = setInterval(moveSnake, 25);
+    const intervalId = setInterval(moveSnake, 40);
 
     return () => {
       clearInterval(intervalId);
